@@ -1,0 +1,15 @@
+# Caddy configuration for the Flashcards SPA
+# Serves the Vite build output from /srv
+# All routes fall back to index.html for React Router (HTML5 history API).
+
+:80 {
+    root * /srv
+    encode gzip
+
+    # API reverse proxy → backend service
+    reverse_proxy /api/* backend:3001
+
+    # SPA fallback: serve index.html for every unmatched path
+    try_files {path} /index.html
+    file_server
+}
